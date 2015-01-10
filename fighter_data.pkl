@@ -1,0 +1,49 @@
+(lp1
+(isaltybot
+Fighter
+p2
+(dp3
+S'streak'
+p4
+I0
+sS'string'
+p5
+S'Hard man (-8) - $88,953, '
+p6
+sS'avg_value'
+p7
+I0
+sS'wins'
+p8
+I0
+sS'loses'
+p9
+I1
+sS'wlRatio'
+p10
+I0
+sS'name'
+p11
+S'Hard man'
+p12
+sba(isaltybot
+Fighter
+p13
+(dp14
+g4
+I0
+sg5
+S'Mina EX2 (2) - $202,784\r\n'
+p15
+sg7
+I0
+sg8
+I1
+sg9
+I0
+sg10
+I0
+sg11
+S'Mina EX2'
+p16
+sba.
