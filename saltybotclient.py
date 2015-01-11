@@ -12,6 +12,9 @@ from saltybot import Fighter
 import cPickle as pickle
 from read_fighters import read_fighters
 
+"""
+Log in information.
+"""
 HOST="irc.twitch.tv"
 PORT=6667
 NICK="greggopotato"
@@ -19,7 +22,7 @@ IDENT="greggopotato"
 REALNAME="greggopotato"
 CHANNEL="#saltybet"
 PASSWORD="macqlq0v2b86ry7a89yn9h9rwaujor" #From http://twitchapps.com/tmi/
-readbuffer=""
+
 
 s=socket.socket( )
 s.connect((HOST, PORT))
@@ -28,21 +31,22 @@ s.send("NICK %s\r\n" % NICK)
 s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN %s\r\n" % CHANNEL)
 
+filename= 'fighter_data.pkl'
+
 def split_data(data):
     """
     This function takes in the raw string that appears after Waifu4u anounces
-    that Bets are locked, then splits the text into two strings. One for each
+    that Bets are OPEN, then splits the text into two strings. One for each
     player.
     
-    Returns a list containing the string for each player. Typical players
-    string is Name (#) - $###,###
+    Returns a list containing the string for each player. 
     """
-    name1_start = data.find('Bets are locked. ')+ 17
+    name1_start = data.find('Bets are OPEN for ')+ 18
     data = data[name1_start:]
         
-    name2_start = data.find(', ')+2        
+    name2_start = data.find(' vs ')+4       
     player1_data = data[0:name2_start]
-    player2_data = data[name2_start:]        
+    player2_data = data[name2_start:data.find("! (")]        
     
         
     return [player1_data, player2_data] 
@@ -77,7 +81,12 @@ def AnnounceWinner(fighter1,fighter2,winner):
     print fighter2.loses
 
 Fight_count = 0
-filename= 'fighter_data.pkl'
+
+with open(filename, 'r') as fp:
+    try:    
+        Fighter.fighters = pickle.load(fp)
+    except(EOFError):
+        print "No initial data"
 
 print "Welcome to Greg's Saltybet Tracker"
 print " "
@@ -94,41 +103,62 @@ while 1: #Keeps the connection
     The following if statement locates announcements on the betting stats.
     Immediately after Bets are locked. is the first Fighters name.
     """
-    if data.find('Bets are locked. ') != -1:
+    if data.find('Bets are OPEN for ') != -1:
         
         players = split_data(data)
         if players[0][0:3] != "Team":
-            player1 = players[0]
-            player2 = players[1]
-            
-            
-            name1 = player1[0:player1.find(' (')]
-            name2 = player2[0:player2.find(' (')]
+            name1 = players[0]
+            name2 = players[1]
         
             
-        
-            fighter1 = Fighter(player1, name1)
-            fighter2 = Fighter(player2, name2) 
             
-            print fighter1.name + ' vs ' +fighter2.name + ' BEGIN'
+            print name1 + ' vs ' +name2 + ' BEGIN'
             
             
         elif players[0][0:3] == "Team":
-            print "Stupid Team fights"
+            print "Stupid Team fights\n"
         else:
-            print "Error: Code to determine if team not working."
+            print "Error: Code to determine if team not working.\n"
+            
+    if data.find('Bets are locked. ') != -1:
+        name1_start = data.find('Bets are locked. ')+17    
+        name1_end =  data.find(" (")
+        name2_start = data.find(", ") +2
+        name2_end = data.rfind(" (")
+        
+        
+        if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
+            is1Found = False
+            is2Found = False
+            for fighter in Fighter.fighters:
+                
+                if fighter.name == name1:
+                    fighter1 = fighter
+                    is1Found = True
+                    
+                if fighter.name == name2:
+                    fighter2 = fighter
+                    is2Found = True
+                    
+            if not is1Found:
+                fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
+            if not is2Found:
+                fighter2 = Fighter(data[name2_start:], name2)
+                    
         
     if data.find(' wins! Payouts to') != -1:
         winner= data[data.find('#saltybet :') + 11:data.find(' wins! Payouts to')]
+        try:
+            AnnounceWinner(fighter1, fighter2, winner)
+            Fight_count += 1
+        except(NameError):
+            print "Program started mid fight. The program will record the next fight.\n"
         
-        AnnounceWinner(fighter1, fighter2, winner)
         
         
-        Fight_count += 1
         
-        print " "
-        print "Fight number: %s" % Fight_count
-        print " "
+        print "\n Fight number: %s\n" % Fight_count
+    
         
       
     
