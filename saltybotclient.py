@@ -45,7 +45,7 @@ def split_data(data):
     data = data[name1_start:]
         
     name2_start = data.find(' vs ')+4       
-    player1_data = data[0:name2_start]
+    player1_data = data[0:name2_start - 4]
     player2_data = data[name2_start:data.find("! (")]        
     
         
@@ -104,21 +104,26 @@ while 1: #Keeps the connection
     Immediately after Bets are locked. is the first Fighters name.
     """
     if data.find('Bets are OPEN for ') != -1:
+        try:
+            players = split_data(data)
+            if players[0][0:3] != "Team":
+                name1 = players[0]
+                name2 = players[1]
         
-        players = split_data(data)
-        if players[0][0:3] != "Team":
-            name1 = players[0]
-            name2 = players[1]
-        
             
             
-            print name1 + ' vs ' +name2 + ' BEGIN'
+                print name1 + ' vs ' +name2 + ' BEGIN'
             
             
-        elif players[0][0:3] == "Team":
-            print "Stupid Team fights\n"
-        else:
-            print "Error: Code to determine if team not working.\n"
+            elif players[0][0:3] == "Team":
+                print "Stupid Team fights\n"
+            else:
+                print "Error: Code to determine if team not working.\n"
+                
+        except(NameError):
+            print "Program started mid fight. The program will record the next fight.\n"
+            
+       
             
     if data.find('Bets are locked. ') != -1:
         name1_start = data.find('Bets are locked. ')+17    
@@ -126,25 +131,28 @@ while 1: #Keeps the connection
         name2_start = data.find(", ") +2
         name2_end = data.rfind(" (")
         
-        
-        if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
-            is1Found = False
-            is2Found = False
-            for fighter in Fighter.fighters:
+        try:
+            if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
+                is1Found = False
+                is2Found = False
+                for fighter in Fighter.fighters:
                 
-                if fighter.name == name1:
-                    fighter1 = fighter
-                    is1Found = True
+                    if fighter.name == name1:
+                        fighter1 = fighter
+                        is1Found = True
+                        print "\n Player 1 is in our database."
                     
-                if fighter.name == name2:
-                    fighter2 = fighter
-                    is2Found = True
+                    if fighter.name == name2:
+                        fighter2 = fighter
+                        is2Found = True
+                        print "\n Player 2 is in our database."
                     
-            if not is1Found:
-                fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
-            if not is2Found:
-                fighter2 = Fighter(data[name2_start:], name2)
-                    
+                    if not is1Found:
+                        fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
+                    if not is2Found:
+                        fighter2 = Fighter(data[name2_start:], name2)
+        except(NameError):
+             print "Program started mid fight. The program will record the next fight.\n"
         
     if data.find(' wins! Payouts to') != -1:
         winner= data[data.find('#saltybet :') + 11:data.find(' wins! Payouts to')]
