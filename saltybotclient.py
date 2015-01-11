@@ -133,24 +133,25 @@ while 1: #Keeps the connection
         
         try:
             if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
-                is1Found = False
-                is2Found = False
-                for fighter in Fighter.fighters:
                 
+                for fighter in Fighter.fighters:
+                    is1Found = False
+                    is2Found = False
                     if fighter.name == name1:
                         fighter1 = fighter
                         is1Found = True
-                        print "\n Player 1 is in our database."
+                        
                     
                     if fighter.name == name2:
                         fighter2 = fighter
                         is2Found = True
-                        print "\n Player 2 is in our database."
+                        
                     
                     if not is1Found:
                         fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
                     if not is2Found:
                         fighter2 = Fighter(data[name2_start:], name2)
+                        
         except(NameError):
              print "Program started mid fight. The program will record the next fight.\n"
         
