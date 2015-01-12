@@ -105,3 +105,15 @@ def CheckNames(twitchData, name1, name2):
         
     
     return fighter1, fighter2
+    
+def FindTier(twitchData):
+    if twitchData.find(" Tier)")!= -1:
+        tier = twitchData[twitchData.find(" Tier)") - 1]
+        return tier
+    
+    else:
+        print "Tier not given\n"
+        tier = "Unknown"
+        return tier
+            
+    

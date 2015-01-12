@@ -72,6 +72,7 @@ while 1: #Keeps the connection
         try:
             players = split_data(data)
             name1, name2 = FindNames(players)
+            tier = FindTier(data)
             
             
         except(NameError):
@@ -84,6 +85,9 @@ while 1: #Keeps the connection
         
         try:
             fighter1, fighter2 = CheckNames(data, name1, name2)
+            
+            fighter1.tier = tier
+            fighter2.tier = tier
                         
         except(NameError):
              print "Program started mid fight. The program will record the next fight.\n"

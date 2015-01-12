@@ -17,12 +17,16 @@ def read_fighters(filename):
         else:
             WLR = "N/A"            
             
-        print fighter.name
+        print fighter.name + "\n"
         print "Wins: %s" % fighter.wins
         print "Loses: %s" % fighter.loses
         print "W/L ratio: %s" % WLR
         try:
-            print "Average betting ratio: %s" % fighter.bet_ratio
+            print "Latest tier: %s" % fighter.tier
+        except(AttributeError):
+            print "No Tier recorded."
+        try:
+            print "Average betting ratio: %s\n" % fighter.bet_ratio
         except(AttributeError):
             print "No ratio recorded"
     print " "

@@ -18,6 +18,7 @@ class Fighter():
         self.wins = 0
         self.loses= 0
         self.name = name
+        self.tier = "Unknown"
         Fighter.fighters.append(self)
         
 
