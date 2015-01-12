@@ -84,7 +84,13 @@ while 1: #Keeps the connection
         winner= data[data.find('#saltybet :') + 11:data.find(' wins! Payouts to')]
         try:
             AnnounceWinner(fighter1, fighter2, winner)
+            
+            fighter1.UpdateBetRatio(fighter2)
+            fighter2.UpdateBetRatio(fighter1)
+            
+            
             Fight_count += 1
+            
         except(NameError):
             print "Program started mid fight. The program will record the next fight.\n"
         
