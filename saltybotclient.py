@@ -106,17 +106,16 @@ while 1: #Keeps the connection
     if data.find('Bets are OPEN for ') != -1:
         try:
             players = split_data(data)
-            if players[0][0:3] != "Team":
+            if players[0].find('Team') == -1:
                 name1 = players[0]
+            if players[1].find('Team') == -1:
                 name2 = players[1]
-        
             
-            
-                print name1 + ' vs ' +name2 + ' BEGIN'
-            
-            
-            elif players[0][0:3] == "Team":
-                print "Stupid Team fights\n"
+            if players[0].find('Team') != -1:
+                print "Player 1 is a team and will not be recorded."
+            if players[1].find('Team') != -1:
+                print "Player 2 is a team and will not be recorded."
+                
             else:
                 print "Error: Code to determine if team not working.\n"
                 
@@ -127,9 +126,14 @@ while 1: #Keeps the connection
             
     if data.find('Bets are locked. ') != -1:
         name1_start = data.find('Bets are locked. ')+17    
-        name1_end =  data.find(" (")
-        name2_start = data.find(", ") +2
-        name2_end = data.rfind(" (")
+        if data.find('- $') == -1:        
+            name1_end =  data.find(" (")
+            name2_start = data.find(", ") +2
+            name2_end = data.rfind(" (")
+        else:
+            name1_end = data.find('- $')
+            name2_start = data.find(", ") +2
+            name2_end = data.rfind('- $')
         
         try:
             if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
@@ -147,10 +151,10 @@ while 1: #Keeps the connection
                         is2Found = True
                         
                     
-                    if not is1Found:
-                        fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
-                    if not is2Found:
-                        fighter2 = Fighter(data[name2_start:], name2)
+                if not is1Found:
+                    fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
+                if not is2Found:
+                    fighter2 = Fighter(data[name2_start:], name2)
                         
         except(NameError):
              print "Program started mid fight. The program will record the next fight.\n"
@@ -174,8 +178,8 @@ while 1: #Keeps the connection
         with open(filename, 'w') as fp:
              pickle.dump(Fighter.fighters, fp)
     
-        if Fight_count % 3 ==0:
-            read_fighters(filename)
+        #if Fight_count % 3 ==0:
+        #   read_fighters(filename)
         
 
 
