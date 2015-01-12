@@ -12,6 +12,7 @@ from saltybot import Fighter
 import cPickle as pickle
 from read_fighters import read_fighters
 from saltyFunctions import *
+import os
 
 """
 Log in information.
@@ -39,11 +40,18 @@ filename= 'fighter_data.pkl'
 
 Fight_count = 0
 
-with open(filename, 'r') as fp:
-    try:    
-        Fighter.fighters = pickle.load(fp)
-    except(EOFError):
-        print "No initial data"
+
+if os.path.isfile(filename):
+
+    with open(filename, 'r') as fp:
+        try:    
+            Fighter.fighters = pickle.load(fp)
+        except(EOFError):
+            print "No initial data"
+    
+else:
+    pass
+
 
 print "Welcome to Greg's Saltybet Tracker"
 print " "
