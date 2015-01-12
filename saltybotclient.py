@@ -11,6 +11,7 @@ import socket
 from saltybot import Fighter
 import cPickle as pickle
 from read_fighters import read_fighters
+from saltyFunctions import *
 
 """
 Log in information.
@@ -33,52 +34,8 @@ s.send("JOIN %s\r\n" % CHANNEL)
 
 filename= 'fighter_data.pkl'
 
-def split_data(data):
-    """
-    This function takes in the raw string that appears after Waifu4u anounces
-    that Bets are OPEN, then splits the text into two strings. One for each
-    player.
-    
-    Returns a list containing the string for each player. 
-    """
-    name1_start = data.find('Bets are OPEN for ')+ 18
-    data = data[name1_start:]
+
         
-    name2_start = data.find(' vs ')+4       
-    player1_data = data[0:name2_start - 4]
-    player2_data = data[name2_start:data.find("! (")]        
-    
-        
-    return [player1_data, player2_data] 
-    
-def AnnounceWinner(fighter1,fighter2,winner):
-    if winner[0:3]!= "Team":
-        print " "        
-        print "Results:"        
-        print "Winner: " + winner
-        if winner == fighter1.name:
-            fighter1.wins = fighter1.wins + 1
-            fighter2.loses = fighter2.loses + 1
-            
-            
-        elif winner== fighter2.name:
-            fighter2.wins = fighter2.wins + 1
-            fighter1.loses = fighter1.loses + 1
-            
-        
-        else:
-            print "Error, Winner's name does not match either fighter's names"    
-    
-    print " "
-    print "Fighter 1"
-    print fighter1.name
-    print fighter1.wins
-    print fighter1.loses
-    print " "
-    print "Fighter 2"
-    print fighter2.name
-    print fighter2.wins
-    print fighter2.loses
 
 Fight_count = 0
 
@@ -106,55 +63,19 @@ while 1: #Keeps the connection
     if data.find('Bets are OPEN for ') != -1:
         try:
             players = split_data(data)
-            if players[0].find('Team') == -1:
-                name1 = players[0]
-            if players[1].find('Team') == -1:
-                name2 = players[1]
+            name1, name2 = FindNames(players)
             
-            if players[0].find('Team') != -1:
-                print "Player 1 is a team and will not be recorded."
-            if players[1].find('Team') != -1:
-                print "Player 2 is a team and will not be recorded."
-                
-            else:
-                print "Error: Code to determine if team not working.\n"
-                
+            
         except(NameError):
             print "Program started mid fight. The program will record the next fight.\n"
             
        
             
     if data.find('Bets are locked. ') != -1:
-        name1_start = data.find('Bets are locked. ')+17    
-        if data.find('- $') == -1:        
-            name1_end =  data.find(" (")
-            name2_start = data.find(", ") +2
-            name2_end = data.rfind(" (")
-        else:
-            name1_end = data.find('- $')
-            name2_start = data.find(", ") +2
-            name2_end = data.rfind('- $')
+        
         
         try:
-            if name1 == data[name1_start:name1_end] or name2 == data[name2_start:name2_end]:
-                
-                for fighter in Fighter.fighters:
-                    is1Found = False
-                    is2Found = False
-                    if fighter.name == name1:
-                        fighter1 = fighter
-                        is1Found = True
-                        
-                    
-                    if fighter.name == name2:
-                        fighter2 = fighter
-                        is2Found = True
-                        
-                    
-                if not is1Found:
-                    fighter1 = Fighter(data[name1_start:name2_start - 2], name1)
-                if not is2Found:
-                    fighter2 = Fighter(data[name2_start:], name2)
+            fighter1, fighter2 = CheckNames(data, name1, name2)
                         
         except(NameError):
              print "Program started mid fight. The program will record the next fight.\n"
@@ -178,8 +99,8 @@ while 1: #Keeps the connection
         with open(filename, 'w') as fp:
              pickle.dump(Fighter.fighters, fp)
     
-        #if Fight_count % 3 ==0:
-        #   read_fighters(filename)
+        if Fight_count % 3 ==0:
+           read_fighters(filename)
         
 
 
