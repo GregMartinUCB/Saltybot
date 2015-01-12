@@ -33,8 +33,8 @@ class Fighter():
             self.streak = int(self.string[streak_begin])
     
     def UpdateBetRatio(self, otherPlayer):
-        bet1Start = self.string.find(' - $') + 4
-        bet2Start = otherPlayer.string.find(' - $') + 4
+        bet1Start = self.string.find('- $') + 3
+        bet2Start = otherPlayer.string.find('- $') + 3
         
         bet1 = int(self.string[bet1Start:].replace(',',''))
         bet2 = float(otherPlayer.string[bet2Start:].replace(',',''))
