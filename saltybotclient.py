@@ -97,9 +97,9 @@ while 1: #Keeps the connection
         try:
             AnnounceWinner(fighter1, fighter2, winner)
             
-            fighter1.UpdateBetRatio(fighter2)
-            fighter2.UpdateBetRatio(fighter1)
             
+            
+                        
             
             Fight_count += 1
             
@@ -109,7 +109,7 @@ while 1: #Keeps the connection
         
         
         
-        print "\n Fight number: %s\n" % Fight_count
+        print "\nFight number: %s\n" % Fight_count
     
         
       

@@ -40,18 +40,23 @@ def AnnounceWinner(fighter1,fighter2,winner):
             
         
         else:
-            print "Error, Winner's name does not match either fighter's names"    
+            print "Error, Winner's name does not match either fighter's names"   
+        
+        fighter1.UpdateBetRatio(fighter2)
+        fighter2.UpdateBetRatio(fighter1)
     
     print " "
     print "Fighter 1"
     print fighter1.name
-    print fighter1.wins
-    print fighter1.loses
+    print "Wins: %s" % fighter1.wins
+    print "Loses: %s" %fighter1.loses
+    print "Betting Ratio: %s" % fighter1.bet_ratio
     print " "
     print "Fighter 2"
     print fighter2.name
-    print fighter2.wins
-    print fighter2.loses
+    print "Wins: %s" % fighter2.wins
+    print "Loses: %s" %fighter2.loses
+    print "Betting Ratio: %s" % fighter2.bet_ratio
 
 def FindNames(players):
     if players[0].find('Team') == -1:
