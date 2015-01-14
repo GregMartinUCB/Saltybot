@@ -69,7 +69,7 @@ def FindNames(players):
     if players[1].find('Team') != -1:
         print "Player 2 is a team and will not be recorded."
                 
-    print players[0] + " vs " + players[1] + " Begin"
+    print players[0] + " vs " + players[1] + " Begin\n"
     
     return name1, name2
     

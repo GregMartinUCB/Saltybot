@@ -44,9 +44,9 @@ class Fighter():
         
         if self.bet_ratio != 0.0:
         
-            totalFights = self.loses+self.wins
+            totalFights = self.loses+self.wins - 1
         
-            self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights + 1)
+            self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights)
             
         else:
             self.bet_ratio = ratio
