@@ -71,7 +71,11 @@ def FindNames(players):
                 
     print players[0] + " vs " + players[1] + " Begin\n"
     
-    return name1, name2
+    try:
+        return name1, name2
+    except(UnboundLocalError):
+        pass
+    
     
 def CheckNames(twitchData, name1, name2):
         

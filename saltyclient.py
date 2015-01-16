@@ -43,21 +43,25 @@ while 1: #Keeps the connection
                 print "No initial data"
                 
         players = split_data(data)
-        name1, name2 = FindNames(players)
+        try:
+            name1, name2 = FindNames(players)
         
-        for fighter in Fighter.fighters:
-            if name1 == fighter.name:
-                print "Player 1:\n"
-                print fighter.name
-                print "Wins: %s" % fighter.wins
-                print "Loses: %s" % fighter.loses
-                print "Average Bet Ratio: %s" % fighter.bet_ratio
-                #print "Tier: %s" % fighter.tier
-            if name2 == fighter.name:
-                print "Player 2:\n"
-                print fighter.name
-                print "Wins: %s" % fighter.wins
-                print "Loses: %s" % fighter.loses
-                print "Average Bet Ratio: %s" % fighter.bet_ratio
-                #print "Tier: %s" % fighter.tier
             
+        
+            for fighter in Fighter.fighters:
+                if name1 == fighter.name:
+                    print "Player 1:\n"
+                    print fighter.name
+                    print "Wins: %s" % fighter.wins
+                    print "Loses: %s" % fighter.loses
+                    print "Average Bet Ratio: %s" % fighter.bet_ratio
+                    #print "Tier: %s" % fighter.tier
+                if name2 == fighter.name:
+                    print "Player 2:\n"
+                    print fighter.name
+                    print "Wins: %s" % fighter.wins
+                    print "Loses: %s" % fighter.loses
+                    print "Average Bet Ratio: %s" % fighter.bet_ratio
+                    #print "Tier: %s" % fighter.tier
+        except(TypeError):
+            print "Current fight is a team match. No data available."
