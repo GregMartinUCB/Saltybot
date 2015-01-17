@@ -77,14 +77,19 @@ while 1: #Keeps the connection
             
         except(NameError):
             print "Program started mid fight. The program will record the next fight.\n"
+        except(TypeError):
+            print "Team Fight\n"
             
        
             
     if data.find('Bets are locked. ') != -1:
         
+        fighter1String, fighter2String = split_data(data)
         
         try:
             fighter1, fighter2 = CheckNames(data, name1, name2)
+            fighter1.string = fighter1String
+            fighter2.string = fighter2String
             
             fighter1.tier = tier
             fighter2.tier = tier

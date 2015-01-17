@@ -40,7 +40,12 @@ class Fighter():
         bet1 = int(self.string[bet1Start:].replace(',',''))
         bet2 = float(otherPlayer.string[bet2Start:].replace(',',''))
         
-        ratio = bet1/bet2        
+        if bet1/bet2 >= 1:
+            ratio = bet1/bet2        
+        else:
+            ratio = -(bet2/bet1)
+        
+                
         
         if self.bet_ratio != 0.0:
         
@@ -48,7 +53,7 @@ class Fighter():
             
             try:
         
-                self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights)
+                self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights + 1)
             except(ZeroDivisionError):
                 self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights + 1)
                 

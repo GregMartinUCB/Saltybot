@@ -6,6 +6,7 @@ Created on Thu Jan 08 15:02:06 2015
 """
 def read_fighters(filename):
     import cPickle as pickle
+    from saltyFunctions import DisplayBetRatio
 
     fighter_file = open(filename, 'r')
 
@@ -26,7 +27,7 @@ def read_fighters(filename):
         except(AttributeError):
             print "No Tier recorded."
         try:
-            print "Average betting ratio: %s\n" % fighter.bet_ratio
+            print "Average betting ratio: %s\n" % DisplayBetRatio(fighter)
         except(AttributeError):
             print "No ratio recorded"
     print " "

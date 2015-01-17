@@ -8,20 +8,28 @@ from saltybot import Fighter
 
 def split_data(data):
     """
-    This function takes in the raw string that appears after Waifu4u anounces
-    that Bets are OPEN, then splits the text into two strings. One for each
-    player.
     
-    Returns a list containing the string for each player. 
     """
-    name1_start = data.find('Bets are OPEN for ')+ 18
-    data = data[name1_start:]
+    if data.find('Bets are OPEN for ') != -1:
+        name1_start = data.find('Bets are OPEN for ')+ 18
+        data = data[name1_start:]
         
-    name2_start = data.find(' vs ')+4       
-    player1_data = data[0:name2_start - 4]
-    player2_data = data[name2_start:data.find("! (")]        
+        name2_start = data.find(' vs ')+4       
+        player1_data = data[0:name2_start - 4]
+        player2_data = data[name2_start:data.find("! (")]   
     
+    elif data.find('Bets are locked. '):
+        name1_start = data.find('Bets are locked. ') + 17
         
+        name2_start = data.find(", ") +2
+            
+        player1_data = data[name1_start:name2_start - 2]
+        player2_data = data[name2_start:]
+    
+    else:
+        
+        print "Error, string to be split did not meet the requirments."
+    
     return [player1_data, player2_data] 
     
 def AnnounceWinner(fighter1,fighter2,winner):
@@ -50,13 +58,13 @@ def AnnounceWinner(fighter1,fighter2,winner):
     print fighter1.name
     print "Wins: %s" % fighter1.wins
     print "Loses: %s" %fighter1.loses
-    print "Betting Ratio: %s" % fighter1.bet_ratio
+    print "Betting Ratio: %s" % DisplayBetRatio(fighter1)
     print " "
     print "Fighter 2"
     print fighter2.name
     print "Wins: %s" % fighter2.wins
     print "Loses: %s" %fighter2.loses
-    print "Betting Ratio: %s" % fighter2.bet_ratio
+    print "Betting Ratio: %s" % DisplayBetRatio(fighter2)
 
 def FindNames(players):
     if players[0].find('Team') == -1:
@@ -125,4 +133,16 @@ def FindTier(twitchData):
         tier = "Unknown"
         return tier
             
+def DisplayBetRatio(fighter):
+    
+    #if fighter.bet_ratio < 0:
+        
+        #displayRatio = 1/ (-fighter.bet_ratio + 1)
+    #elif fighter.bet_ratio > 0:
+    displayRatio = fighter.bet_ratio
+    
+    #else:
+    #    displayRatio = 1
+    
+    return displayRatio
     

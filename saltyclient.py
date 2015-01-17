@@ -47,21 +47,24 @@ while 1: #Keeps the connection
             name1, name2 = FindNames(players)
         
             
-        
+            totalFights = 0
             for fighter in Fighter.fighters:
+                totalFights += fighter.wins + fighter.loses
                 if name1 == fighter.name:
                     print "Player 1:\n"
                     print fighter.name
                     print "Wins: %s" % fighter.wins
                     print "Loses: %s" % fighter.loses
-                    print "Average Bet Ratio: %s" % fighter.bet_ratio
+                    print "Average Bet Ratio: %s" % DisplayBetRatio(fighter)
                     #print "Tier: %s" % fighter.tier
                 if name2 == fighter.name:
                     print "Player 2:\n"
                     print fighter.name
                     print "Wins: %s" % fighter.wins
                     print "Loses: %s" % fighter.loses
-                    print "Average Bet Ratio: %s" % fighter.bet_ratio
+                    print "Average Bet Ratio: %s" % DisplayBetRatio(fighter)
                     #print "Tier: %s" % fighter.tier
+            totalFights = totalFights/2
+            print "The total number of fights is: %s" % totalFights
         except(TypeError):
             print "Current fight is a team match. No data available."
