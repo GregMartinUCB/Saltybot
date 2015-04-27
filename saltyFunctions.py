@@ -135,14 +135,14 @@ def FindTier(twitchData):
             
 def DisplayBetRatio(fighter):
     
-    #if fighter.bet_ratio < 0:
+    if fighter.bet_ratio < 0:
         
-        #displayRatio = 1/ (-fighter.bet_ratio + 1)
-    #elif fighter.bet_ratio > 0:
-    displayRatio = fighter.bet_ratio
+        displayRatio = 1/ (-fighter.bet_ratio + 1)
+    elif fighter.bet_ratio > 0:
+        displayRatio = fighter.bet_ratio
     
-    #else:
-    #    displayRatio = 1
+    else:
+        displayRatio = 1
     
     return displayRatio
     

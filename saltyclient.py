@@ -16,7 +16,7 @@ NICK="greggopotato"
 IDENT="greggopotato"
 REALNAME="greggopotato"
 CHANNEL="#saltybet"
-PASSWORD="macqlq0v2b86ry7a89yn9h9rwaujor" #From http://twitchapps.com/tmi/
+PASSWORD="f0t47tdl06qd3q2mtpogu4g0oq6zw7" #From http://twitchapps.com/tmi/
 
 
 s=socket.socket( )

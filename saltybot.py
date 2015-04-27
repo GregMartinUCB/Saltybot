@@ -37,8 +37,11 @@ class Fighter():
         bet1Start = self.string.find('- $') + 3
         bet2Start = otherPlayer.string.find('- $') + 3
         
-        bet1 = int(self.string[bet1Start:].replace(',',''))
+        
+        bet1 = float(self.string[bet1Start:].replace(',',''))
         bet2 = float(otherPlayer.string[bet2Start:].replace(',',''))
+        print 'test ' + self.string[bet1Start:].replace(',','')
+        print 'test2 ' + otherPlayer.string[bet2Start:].replace(',','')
         
         if bet1/bet2 >= 1:
             ratio = bet1/bet2        
@@ -47,15 +50,16 @@ class Fighter():
         
                 
         
-        if self.bet_ratio != 0.0:
+        if self.loses+self.wins != 0:
         
-            totalFights = self.loses+self.wins - 1
-            
+            totalFights = self.loses+self.wins
+            print totalFights
             try:
         
-                self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights + 1)
+                self.bet_ratio = (self.bet_ratio * (totalFights-1) + ratio)/float((totalFights))
             except(ZeroDivisionError):
-                self.bet_ratio = (self.bet_ratio * totalFights + ratio)/(totalFights + 1)
+                print "Error has occured setting new bet ratio. Divide by Zero."
+                
                 
             
         else:

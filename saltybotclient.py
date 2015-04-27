@@ -23,7 +23,7 @@ NICK="greggopotato"
 IDENT="greggopotato"
 REALNAME="greggopotato"
 CHANNEL="#saltybet"
-PASSWORD="macqlq0v2b86ry7a89yn9h9rwaujor" #From http://twitchapps.com/tmi/
+PASSWORD="f0t47tdl06qd3q2mtpogu4g0oq6zw7" #From http://twitchapps.com/tmi/
 
 
 s=socket.socket( )
@@ -48,6 +48,11 @@ if os.path.isfile(filename):
             Fighter.fighters = pickle.load(fp)
         except(EOFError):
             print "No initial data"
+        except(AttributeError):
+            the_list = pickle.load(fp)
+            for i in len(the_list):
+                Fighter.fighters[i] = the_list[i]
+                
     
 else:
     pass
@@ -55,7 +60,7 @@ else:
 
 print "Welcome to Greg's Saltybet Tracker"
 print " "
-
+midfight = True
 while 1: #Keeps the connection
     data=s.recv(1024)
     if data.find ( 'PING' ) != -1:
@@ -63,12 +68,13 @@ while 1: #Keeps the connection
     
     #print data #Displays the chat
     
-        
+    
     """
     The following if statement locates announcements on the betting stats.
     Immediately after Bets are locked. is the first Fighters name.
     """
-    if data.find('Bets are OPEN for ') != -1:
+    if data.find('Bets are OPEN for ') != -1 and data.find('Team ') == -1:
+        midfight = False
         try:
             players = split_data(data)
             name1, name2 = FindNames(players)
@@ -77,14 +83,17 @@ while 1: #Keeps the connection
             
         except(NameError):
             print "Program started mid fight. The program will record the next fight.\n"
-        except(TypeError):
-            print "Team Fight\n"
+        
             
+    
        
             
-    if data.find('Bets are locked. ') != -1:
+    if data.find('Bets are locked. ') != -1 and data.find('Team ') == -1:
         
         fighter1String, fighter2String = split_data(data)
+        
+        print fighter1String
+        print fighter2String
         
         try:
             fighter1, fighter2 = CheckNames(data, name1, name2)
@@ -96,35 +105,50 @@ while 1: #Keeps the connection
                         
         except(NameError):
              print "Program started mid fight. The program will record the next fight.\n"
+    
+    
         
     if data.find(' wins! Payouts to') != -1:
         winner= data[data.find('#saltybet :') + 11:data.find(' wins! Payouts to')]
-        try:
-            AnnounceWinner(fighter1, fighter2, winner)
+        
+        if midfight == False:
+            try:
+                AnnounceWinner(fighter1, fighter2, winner)
             
             
             
                         
             
-            Fight_count += 1
+                Fight_count += 1
+                
+                print "\nFight number: %s\n" % Fight_count
+        
             
-        except(NameError):
-            print "Program started mid fight. The program will record the next fight.\n"
+          
+        
+                with open(filename, 'w') as fp:
+                    pickle.dump(Fighter.fighters, fp)
+            
+        #except(NameError):
+            #print "Program started mid fight. The program will record the next fight.\n"
+        #except(ZeroDivisionError):
+            #print "Program started mid fight. The program will record the next fight.\n"
+            
+            except(ValueError):
+                print "Fight not recorded, bet could not be casted into float."
         
         
         
         
-        print "\nFight number: %s\n" % Fight_count
-    
-        
-      
-    
-        with open(filename, 'w') as fp:
-             pickle.dump(Fighter.fighters, fp)
-    
-        if Fight_count % 3 ==0:
-           read_fighters(filename)
-        
+        if Fight_count % 25 ==0:
+            try:
+                read_fighters(filename)
+            except(IOError):
+                pass
+        if Fight_count % 100 == 0:
+            num_fighters = str(len(Fighter.fighters))
+            with open('backups/backup_'+ num_fighters +'.pkl', 'w') as fp:
+                pickle.dump(Fighter.fighters, fp)
 
 
                
