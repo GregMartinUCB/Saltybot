@@ -35,8 +35,10 @@ s.send("JOIN %s\r\n" % CHANNEL)
 
 filename= 'fighter_data.pkl'
 
+#test_fighter = Fighter('TEST', 'TEST')
 
-        
+#print test_fighter.test_bet_ratio()
+
 
 Fight_count = 0
 
@@ -140,12 +142,12 @@ while 1: #Keeps the connection
         
         
         
-        if Fight_count % 25 ==0:
+        if Fight_count % 25 == 1:
             try:
                 read_fighters(filename)
             except(IOError):
                 pass
-        if Fight_count % 100 == 0:
+        if Fight_count % 100 == 1:
             num_fighters = str(len(Fighter.fighters))
             with open('backups/backup_'+ num_fighters +'.pkl', 'w') as fp:
                 pickle.dump(Fighter.fighters, fp)

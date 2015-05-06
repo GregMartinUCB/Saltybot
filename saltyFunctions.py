@@ -38,13 +38,13 @@ def AnnounceWinner(fighter1,fighter2,winner):
         print "Results:"        
         print "Winner: " + winner
         if winner == fighter1.name:
-            fighter1.wins = fighter1.wins + 1
-            fighter2.loses = fighter2.loses + 1
+            fighter1.wins.append(1)
+            fighter2.wins.append(0)
             
             
         elif winner== fighter2.name:
-            fighter2.wins = fighter2.wins + 1
-            fighter1.loses = fighter1.loses + 1
+            fighter2.wins.append(1)
+            fighter1.wins.append(0)
             
         
         else:
@@ -52,18 +52,21 @@ def AnnounceWinner(fighter1,fighter2,winner):
         
         fighter1.UpdateBetRatio(fighter2)
         fighter2.UpdateBetRatio(fighter1)
+        fighter1.opponent.append(fighter2.name)
+        fighter2.opponent.append(fighter1.name)
     
+        
     print " "
     print "Fighter 1"
     print fighter1.name
     print "Wins: %s" % fighter1.wins
-    print "Loses: %s" %fighter1.loses
+    
     print "Betting Ratio: %s" % DisplayBetRatio(fighter1)
     print " "
     print "Fighter 2"
     print fighter2.name
     print "Wins: %s" % fighter2.wins
-    print "Loses: %s" %fighter2.loses
+    
     print "Betting Ratio: %s" % DisplayBetRatio(fighter2)
 
 def FindNames(players):

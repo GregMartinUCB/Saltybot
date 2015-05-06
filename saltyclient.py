@@ -54,14 +54,14 @@ while 1: #Keeps the connection
                     print "Player 1:\n"
                     print fighter.name
                     print "Wins: %s" % fighter.wins
-                    print "Loses: %s" % fighter.loses
+                    #print "Loses: %s" % fighter.loses
                     print "Average Bet Ratio: %s" % DisplayBetRatio(fighter)
                     #print "Tier: %s" % fighter.tier
                 if name2 == fighter.name:
                     print "Player 2:\n"
                     print fighter.name
                     print "Wins: %s" % fighter.wins
-                    print "Loses: %s" % fighter.loses
+                    #print "Loses: %s" % fighter.loses
                     print "Average Bet Ratio: %s" % DisplayBetRatio(fighter)
                     #print "Tier: %s" % fighter.tier
             totalFights = totalFights/2
